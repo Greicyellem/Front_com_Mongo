@@ -5,6 +5,8 @@ import axios from 'axios'; // Adicione esta linha para importar o Axios
 import Appbar from '@/app/components/Appbar';
 import Drawer from '@/app/components/Drawer';
 import 'tailwindcss/tailwind.css';
+import { useRouter } from "next/router";
+
 
 const CompleteProfile = () => {
   const { register, handleSubmit } = useForm();
@@ -16,11 +18,16 @@ const CompleteProfile = () => {
   };
 
   const { data: session } = useSession();
+  const router = useRouter();
+
 
   const onSubmit = async (data) => {
     try {
       const response = await axios.post('http://localhost:3000/users', data);
       console.log('Resposta da API (post): ', response.data);
+      alert('Usuário criado com sucesso! Redirecionando para Login!')
+      router.push('/login')
+      
     } catch (error) {
       console.error(error);
     }
@@ -29,6 +36,8 @@ const CompleteProfile = () => {
         <main className="min-h-screen">
         <Appbar onMenuToggle={handleMenuToggle}></Appbar>
         <Drawer isOpen={isDrawerOpen} onClose={handleMenuToggle}></Drawer>
+
+        <h1> Cadastro de Usuário</h1>
   
         <form
           onSubmit={handleSubmit(onSubmit)} // Adicione isso para lidar com a submissão do formulário
