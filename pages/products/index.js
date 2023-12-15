@@ -71,7 +71,8 @@ const ProductsPage = () => {
      <Appbar onMenuToggle={handleMenuToggle}></Appbar>
       <Drawer isOpen={isDrawerOpen} onClose={handleMenuToggle}></Drawer>
       
-      <h1>Bem vindo(a), {userInfo.user.user_name}</h1>
+      {userInfo && (
+    <>
       
       <form onSubmit={handleSubmit} className="flex justify-center mt-4">
         <select value={orderPrice} onChange={handleOrderChange} className="mr-2">
@@ -122,6 +123,9 @@ const ProductsPage = () => {
           Próxima
         </button>
       </div>
+
+    </>
+     )}
     </main>
   );
 };

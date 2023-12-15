@@ -1,11 +1,33 @@
-import React, {createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
     const [userInfo, setUser] = useState(null);
 
-    const login =(userData) => {
+    useEffect(() => {
+        const getStoredUserInfo = () => {
+            if (typeof window !== 'undefined') {
+                const storedUserInfo = localStorage.getItem('userInfo');
+                return storedUserInfo ? JSON.parse(storedUserInfo) : null;
+            }
+            return null;
+        }
+
+        setUser(getStoredUserInfo());
+    }, []);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            if (userInfo) {
+                localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            } else {
+                localStorage.removeItem('userInfo');
+            }
+        }
+    }, [userInfo]);
+
+    const login = (userData) => {
         setUser(userData);
     }
 
@@ -13,8 +35,8 @@ const AuthProvider = ({ children }) => {
         setUser(null);
     }
 
-    return(
-        <AuthContext.Provider value={{ userInfo, login, logout}}>
+    return (
+        <AuthContext.Provider value={{ userInfo, login, logout }}>
             {children}
         </AuthContext.Provider>
     )
