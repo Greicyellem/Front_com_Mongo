@@ -33,6 +33,7 @@ const LoginPage = () => {
     console.log(userData)
 
     if (userData) {
+      alert('Logado');
       login(userData)
       router.push(`/products`);
     }

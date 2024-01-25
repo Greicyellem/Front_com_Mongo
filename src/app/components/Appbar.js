@@ -1,12 +1,18 @@
 import React,{ useContext, useEffect} from "react";
 import { ThemeContext } from "@/app/contexts/ThemeContext"
 import { AuthContext, AuthProvider, useAuth } from '@/app/contexts/AuthContext';
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 function Appbar({onMenuToggle}) {
   const { theme } = useContext(ThemeContext);
   const { userInfo } = useContext(AuthContext);
   const router = useRouter();
+
+  if(userInfo){
+    if(userInfo.user.user_image == undefined){ 
+      userInfo.user.user_image  = 'user.jpg';
+    }
+  }
 
   const authContext = useAuth();
   const { logout } = authContext;
@@ -30,13 +36,16 @@ function Appbar({onMenuToggle}) {
     </div>
 
     <div className={`flex justify-between items-center p-4`}>
-      <div className={`mx-4
+      {userInfo && (<div className={`mx-4 flex items-center gap-2
       ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
-        <h1> {userInfo && 'Logado(a) como:' + userInfo.user.user_name}</h1>
-      </div>
+
+        <img className="object-contain h-12 w-12 rounded-full" src={'http://localhost:3000/'+userInfo?.user.user_image}/>
+
+        <h1> {userInfo && userInfo.user.user_name}</h1>
+      </div>)}
 
       <button className="mx-4" onClick={onLogout}>
-        {userInfo && 'Logout'}
+        {userInfo && 'Sair'}
       </button>
 
     <button onClick={onMenuToggle}>

@@ -5,7 +5,7 @@ import { AuthProvider } from "@/app/contexts/AuthContext";
 
 function App({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <AuthProvider> 
+    <AuthProvider>
       <ThemeProvider>
         <SessionProvider session={session}>
           <CartProvider>
